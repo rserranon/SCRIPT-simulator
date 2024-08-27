@@ -29,7 +29,7 @@ export class UIHandler {
 
   setOperationPosition() {
     // Implementation for setting the initial position of the operation container
-    const operationDiv = document.querySelector(".operation-result");
+    const operationDiv = document.querySelector(".script-execution");
     const rect = operationDiv.getBoundingClientRect();
 
     document.documentElement.style.setProperty(

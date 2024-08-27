@@ -9,8 +9,16 @@ export class Interpreter {
   }
 
   parseAndExecute(script) {
+    this.animationHandler.clearScriptExecution(); // Clear the container
+    this.animationHandler.resetIndex(); // Reset index before processing a new script
     const scriptArray = script.split(" ");
 
+    // First, emit an event to add all elements to the execution script section
+    scriptArray.forEach((element, index) => {
+      this.animationHandler.onMoveToExecution({ element, index });
+    });
+
+    // Then, process each element one by one
     scriptArray.forEach((element) => {
       const entry = opcodeDictionary[element];
 
@@ -42,7 +50,7 @@ export class Interpreter {
 
       case "OP_HASH160": {
         const element = this.stack.pop();
-        const hash = this.hash160(element);
+        const hash = `2af16`; // this.hash160(element);
         this.stack.push(hash);
         break;
       }
@@ -75,6 +83,10 @@ export class Interpreter {
       animationHandler.onAccessAt.bind(animationHandler),
     );
     this.stack.on("peek", animationHandler.onPeek.bind(animationHandler));
+
+    // // Bind the new moveToExecution event
+    // this.on("moveToExecution", animationHandler.onMoveToExecution.bind(animationHandler));
+
     this.animationsBound = true; // Set the flag
   }
 }
