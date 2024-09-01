@@ -85,7 +85,7 @@ sequenceDiagram
 - JavaScript (ES6+)
 - HTML5
 - CSS3
-- Node.js for running the development server
+- Node.js to manage mjs modules
 - Event-driven architecture for managing the stack operations and animations
 
 ### Contributing

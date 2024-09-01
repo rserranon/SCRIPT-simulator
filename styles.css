@@ -1,163 +1,77 @@
 :root {
-    --container-height: 25px; /* Height of each container element */
-    --stack-height: 500px;
-    --base-y: calc(50vh - 100px); /* Base Y position for the first element */
-    --x-position: calc(40vw - 50%); /* X position of the stack, adjusted for width */
-    --animation-duration: 2s; /* Duration of the moveToStack animation */
+    /* Layout Variables */
+    --container-height: 25px;
+    --stack-height: 65vh;
+    --stack-width: 160px;
+    --base-y: calc(50vh - 100px);
+    --x-position: calc(40vw - 50%);
+    
+    /* Animation Variables */
+    --animation-duration: 2s;
+    --transition-ease: ease-in-out;
+    
+    /* Color Variables */
+    --border-color: #333;
+    --bg-color: #fff;
+    --font-color: #333;
+    --primary-color: #ffcc44;
+    --secondary-color: #6CB4EE;
+    --hover-bg-color: #f0f0f0;
+
+    /* Accessibility Variables */
+    --focus-outline: 2px solid #000;
 }
 
-  body {
+body {
     font-family: Arial, sans-serif;
-    font-size: 12px; /* Sets the base font size for the body */
-    background-color: #f0f0f0;
-}
-
-.footer {
-    display: flex;
-    width: 100%;
-    /*box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);*/
-}
-
-.label {
-    grid-row: 7;
-    padding: 5px 10px;
-    border-radius: 5px;
     font-size: 12px;
-    color: #fff;
-    text-transform: capitalize;
-    margin: 7px; /* Adds space around each label */
+    background-color: #f0f0f0;
+    height: 100%;
 }
 
+/* Layout: Grid */
 .content-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    /*grid-auto-rows: minmax(var(--container-height), auto);*/
-    gap: 10px; /* Add gap for spacing if necessary */
+    gap: 10px;
     align-items: start;
 }
 
-.stack-container {
-  display: flex;
-  grid-column: 2 / span 1; /* Ensure it's placed in the 2nd column */
-  grid-row: 1 / span 2; /* Ensure it spans 3 rows if needed */
-  flex-direction: column-reverse;
-  grid-auto-rows: minmax(var(--container-height), auto);
-  align-items: start;
-  width: 160px;
-  height: var(--stack-height); /* Dynamically adjust stack height */
-  border: 2px solid #333;
-  border-radius: 5px;
-  background-color: #fff;
-  z-index: 1;
+.stack-container, 
+.alt-stack-container, .operation-result {
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: start;
+    width: var(--stack-width);
+    height: var(--stack-height);
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--bg-color);
+    z-index: 1;
 }
 
 .alt-stack-container {
-    display: flex;
     grid-column: 3 / span 1;
-    grid-row: 1 / span 2; /* Adjust row span if needed */
-    flex-direction: column-reverse;
-    width: 160px;
-    height: var(--stack-height); /* Dynamically adjust stack height */
-    border: 2px solid #333;
-    border-radius: 5px;
-    background-color: #fff;
-    z-index: 1;
-    display: none;
-}
-
-.stack-item {
-    display: none;
-    width: 160px;
-    height: var(--container-height);
-    border: 2px solid #333;
-    border-radius: 5px;
-    background-color: #fff;
-    box-sizing: border-box;
-    justify-content: center;
-    /*align-items: center;*/
-    transition: all 0.3s ease;
-    opacity: 0;
-}
-
-.stack-item.appear {
-    animation: stackAppear var(--animation-duration) forwards;
-    opacity: 1; /* End state */
-}
-
-/* Initial state, element is invisible */
-.script-step{
-    display: flex;
-    height: var(--container-height); /* Consistent height */
-    border: 2px solid #333;
-    border-radius: 5px;
-    margin: 5px; /* Remove margin to avoid gaps */
-    padding: 5px 10px;
-    background-color: #fff;
-    box-sizing: border-box; /* Include padding and border in width and height */
-    justify-content: center;
-    margin: 3px;
-    /*animation: moveToStack var(--animation-duration) forwards;*/
-    transition: opacity 0.8s ease-in; /* Smooth transition of opacity */
-    opacity: 0;
-    z-index: 2;
-}
-
-/* Final state, element becomes visible */
-.script-step.appear {
-  opacity: 1;
-}
-
-.stack {
-    opacity: 1;
-    z-index: 1;
-    animation: stackAppear var(--animation-duration) forwards; /* Ensure stack element appears after animation */
-}
-
-@keyframes moveToStack {
-    0% {
-        opacity: 1;
-        transform: translateY(0) translateX(0);
-    }
-    20% {
-        opacity: 1;
-        transform: translateY(-20px) translateX(0); /* Move up */
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(-20px) translateX(var(--x-position)); /* Move to the right towards the center */
-    }
-    80% {
-        opacity: 1;
-        transform: translateY(calc(var(--base-y) - var(--container-height) * var(--index))) translateX(var(--x-position)); /* Move down into the stack */
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(calc(var(--base-y) - var(--container-height) * var(--index))) translateX(var(--x-position)); /* Fade out */
-    }
-}
-
-@keyframes stackAppear {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+    display: none; /* Initially hidden */
 }
 
 .operation-result {
     grid-column: 1;
-    width: 100%;
+    grid-row: 2;
+    border: none;
+    justify-self: center;
+    height: calc(var(--container-height) * 10)
 }
 
-
 .result-label {
-    grid-column: 1 / 2; /* Adjust this to ensure it's in the first column */
-    grid-row: 1; /* Place it in the first row */
-    background-color: #ffcc00;
+    grid-column: 1;
+    grid-row: 1;
+    background-color: var(--primary-color);
     padding: 10px;
     font-weight: bold;
-    width: 100%; /* Ensure it spans the width needed */
+    width: -webkit-fill-available;
 }
 
 .script-execution {
@@ -166,27 +80,111 @@
     display: flex;
     width: 100%;
     justify-content: flex-start;
-    /*margin-bottom: 10px;*/
-    height: var(--container-height);
+    height: calc(var(--container-height) * 2);
 }
 
+/* Flexbox Content */
+.stack-item, 
+.script-step {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--container-height);
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--bg-color);
+    box-sizing: border-box;
+    transition: all var(--animation-duration) var(--transition-ease);
+}
+
+.stack-item {
+    width: var(--stack-width);
+    margin-bottom: 5px;
+}
+
+.stack-item.appear, 
+.script-step.appear {
+    opacity: 1;
+}
+
+.script-step {
+    padding: 5px 10px;
+    margin: 3px;
+    opacity: 0;
+    z-index: 2;
+    transition: opacity 0.8s ease-in;
+}
+
+/* Footer */
+.footer {
+    grid-column: 1 / -1;
+    grid row: 7;
+    display: flex;
+    width: 50%;
+}
+
+/* Label */
+.label {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #fff;
+    text-transform: capitalize;
+    margin: 7px; /* Adds space around each label */
+}
+
+/* Buttons */
+button {
+    padding: 10px 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--hover-bg-color);
+}
+
+/* Operation Result Items */
+.operation-result-item {
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    display: flex;
+    grid-column: 3 / span 1;
+    grid-row: 1 / span 2;
+    flex-direction: column-reverse;
+    width: var(--stack-width);
+    z-index: 1;
+    display: none;
+}
+
+.operation-result-item-appear {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Running Script */
 .running-script {
     grid-row: 4;
     display: flex;
     flex-direction: row;
     width: auto;
-    height: var(--container-height); /* Dynamically adjust stack height */
-    border: 2px solid #333;
+    height: var(--container-height);
+    border: 2px solid var(--border-color);
     border-radius: 5px;
-    background-color: #fff;
+    background-color: var(--bg-color);
     z-index: 1;
     padding: 3px;
-    margin-left 10%;
+    margin-left: 10%;
     font-size: 12px;
-  }
+}
 
+/* Controls */
 .controls {
-    /*justify-content: center;*/
     grid-column: 1 / -1;
     align-items: center;
     gap: 10px;
@@ -196,27 +194,13 @@
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#opcodeInput {
+#scriptInput {
+    width: 40%;
     padding: 10px;
-    font-size: 14px;
-    width: 70%;
-}
-
-button {
-    padding: 10px 20px;
     font-size: 12px;
-    cursor: pointer;
-    border: 1px solid #333;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-button:hover {
-    background-color: #f0f0f0;
-}
-
-/* Type-specific styles */
+/* Type-specific Styles */
 .constants {
     background-color: #ffcc00;
 }
@@ -226,7 +210,7 @@ button:hover {
 }
 
 .stack-opcode {
-    background-color: #6CB4EE;
+    background-color: var(--secondary-color);
 }
 
 .splice {
@@ -252,3 +236,41 @@ button:hover {
 .keys {
     background-color: #3366cc;
 }
+
+/* Accessibility */
+button:focus, 
+.stack-item:focus, 
+.script-step:focus {
+    outline: var(--focus-outline);
+}
+
+/* Animations */
+@keyframes moveToStack {
+    0% {
+        opacity: 1;
+        transform: translateY(0) translateX(0);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-20px) translateX(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-20px) translateX(var(--x-position));
+    }
+    80%, 100% {
+        opacity: 0;
+        transform: translateY(calc(var(--base-y) - var(--container-height) * var(--index)))
+                    translateX(var(--x-position));
+    }
+}
+
+@keyframes stackAppear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+

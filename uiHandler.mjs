@@ -4,6 +4,7 @@ export class UIHandler {
   constructor() {
     this.scriptContainer = document.querySelector(".script-execution");
     this.stackContainer = document.querySelector(".stack-container");
+    this.operationResultContainer = document.querySelector(".operation-result");
 
     // Initialize the positions and footer
     this.setStackPosition();

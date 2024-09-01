@@ -62,33 +62,86 @@ export class AnimationHandler {
   }
 
   onPush(event) {
-    // Retrieve the corresponding element from the script-execution section
     const step = this.uiHandler.scriptContainer.querySelector(
       `[data-index="${this.currentIndex}"]`,
     );
 
     if (step) {
-      // Schedule the move to stack and stack appear animations
-      setTimeout(() => {
-        // Move the step to the stack and make it disappear from execution
-        step.style.opacity = "0";
-        this.uiHandler.stackContainer.appendChild(step);
+      // Move the element to the operation-result container
+      this.uiHandler.operationResultContainer.appendChild(step);
 
-        // Trigger the stack appear animation
-        requestAnimationFrame(() => {
-          stack.classList.add("appear");
-        });
-      }, index * 2000 + 1800); // Adjust timing to ensure smooth transition
+      // Apply initial styles for a smooth transition
+      step.style.transition = "transform 1s ease, opacity 1s ease";
+      step.style.transform = "translateY(-50px)"; // Move the element slightly up
+      step.style.opacity = "1";
+
+      // After a short delay, move the element to the stack
+      setTimeout(() => {
+        // Reset styles before moving to the stack
+        step.style.transition = "transform 1s ease, opacity 1s ease";
+        step.style.transform = "translateY(0px)"; // Reset the Y position
+        step.style.opacity = "0"; // Fade out before moving to the stack
+
+        // After the fade-out transition ends, append the element to the stack
+        setTimeout(() => {
+          this.uiHandler.stackContainer.appendChild(step);
+
+          // Trigger the stack appear animation
+          requestAnimationFrame(() => {
+            step.classList.remove("operation-result-item");
+            step.classList.add("stack-item");
+            step.style.opacity = "1"; // Fade in after moving to the stack
+          });
+        }, 1000); // Match this timing with the fade-out transition duration
+      }, 2000); // Time to display the element in the operation-result container
 
       this.currentIndex++;
-
-      // Apply animations here
-      console.log(
-        `Animating push for element at index ${this.currentIndex - 1}:`,
-        event,
-      );
     }
   }
+  // onPush(event) {
+  //   const step = this.uiHandler.scriptContainer.querySelector(
+  //     `[data-index="${this.currentIndex}"]`,
+  //   );
+  //
+  //   if (step) {
+  //     // First, move the element to the operation-result container
+  //     this.uiHandler.operationResultContainer.appendChild(step);
+  //
+  //     // Set an initial position for the transition (e.g., start from where it was in the script container)
+  //     step.style.transform = "translateY(-50px)"; // Adjust this value based on your layout
+  //     step.style.opacity = "0";
+  //
+  //     // Trigger the smooth transition
+  //     requestAnimationFrame(() => {
+  //       console.log("Inside requestAnimationFrame");
+  //       step.classList.add("operation-result-item");
+  //       step.classList.add("operation-result-item-appear");
+  //       step.style.opacity = "1";
+  //     });
+  //
+  //     // After a delay, move the element from operation-result to the stack
+  //     setTimeout(() => {
+  //       step.style.opacity = "0";
+  //       this.uiHandler.stackContainer.appendChild(step);
+  //
+  //       // Trigger the stack appear animation
+  //       requestAnimationFrame(() => {
+  //         step.classList.remove("operation-result-item");
+  //         step.classList.add("stack-item");
+  //         step.classList.add("stack-item-appear");
+  //         step.style.opacity = "1";
+  //       });
+  //     }, 2000); // Delay between moving to operation-result and stack
+  //
+  //     this.currentIndex++;
+  //
+  //     // Apply animations here
+  //     console.log(
+  //       `Animating push for element at index ${this.currentIndex - 1}:`,
+  //       event,
+  //     );
+  //   }
+  // }
 
   onPop(event) {
     // Implement the animation for the 'pop' operation
@@ -98,7 +151,7 @@ export class AnimationHandler {
 
   onPeek(event) {
     // Implement the animation for the 'pop' operation
-    console.log("Animating pop:", event);
+    console.log("Animating peek:", event);
     // Example: animate removing an element from the visual stack
   }
 
