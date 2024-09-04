@@ -1,4 +1,6 @@
-# Script Execution and Animation Simulator
+# Bitcoin SCRIPT Execution and Animation Simulator 
+
+![image](https://github.com/user-attachments/assets/99a883fc-2dd7-452d-af46-6a0ca7e3c236)
 
 This project simulates the execution of scripts, similar to those found in
 Bitcoin's Script language. The simulator provides a visual representation
